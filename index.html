@@ -58,12 +58,12 @@
                     <label class="block text-sm font-semibold mb-1">Period</label>
                     <select id="period" required class="w-full border-2 border-sky-200 rounded-lg p-3 focus:outline-none focus:border-sky-500 bg-white">
                         <option value="" disabled selected>Select your period...</option>
-                        <option value="1st">1st</option>
-                        <option value="A2">A2</option>
-                        <option value="A4">A4</option>
-                        <option value="B2">B2</option>
-                        <option value="B3">B3</option>
-                        <option value="5th">5th</option>
+                        <option value="1st">1st (8:56 AM – 9:42 AM)</option>
+                        <option value="A2">A2 (9:48 AM – 11:19 AM)</option>
+                        <option value="B2">B2 (9:48 AM – 11:19 AM)</option>
+                        <option value="B3">B3 (11:25 AM – 1:30 PM)</option>
+                        <option value="A4">A4 (1:36 PM – 3:07 PM)</option>
+                        <option value="5th">5th (3:13 PM – 4:00 PM)</option>
                     </select>
                 </div>
                 <div class="pt-4">
@@ -146,12 +146,15 @@
             <div class="text-6xl mb-4">🎉</div>
             <h2 class="text-3xl font-bold mb-4 text-sky-900">Flashcards Completed!</h2>
             <p class="text-lg mb-6">Your record has been securely submitted to the teacher's grade sheet. Your personal record CSV file has also downloaded automatically.</p>
-            <div class="bg-sky-50 border border-sky-200 rounded-lg p-6 mb-8 inline-block min-w-[280px]">
-                <p class="text-sm text-gray-600 mb-1">Final Percentage Score</p>
-                <p id="final-score" class="text-4xl font-bold text-sky-600"></p>
-                <div class="mt-4 pt-3 border-t border-sky-200">
-                    <p class="text-xs uppercase tracking-widest text-gray-500 font-semibold">Unique Verification Code</p>
-                    <p id="unique-code" class="text-2xl font-mono font-extrabold text-sky-900 tracking-widest mt-1 select-all"></p>
+            
+            <div class="bg-sky-50 border border-sky-200 rounded-lg p-6 mb-8 inline-block min-w-[280px] relative overflow-hidden">
+                <!-- Watermark Unique Verification Code -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
+                    <span id="unique-code-watermark" class="text-4xl md:text-5xl font-mono font-black text-sky-900 opacity-20 tracking-widest transform -rotate-12"></span>
+                </div>
+                <div class="relative z-10">
+                    <p class="text-sm text-gray-600 mb-1 font-semibold">Final Percentage Score</p>
+                    <p id="final-score" class="text-4xl font-bold text-sky-600"></p>
                 </div>
             </div>
             <div>
@@ -229,10 +232,8 @@
         let isRecording = false;
         let recognition = null;
         
-        // Track the start time
         let testStartTime = null;
 
-        // Unique local storage key for Regular Verbs Speaking Flashcards
         let submittedEmails = JSON.parse(localStorage.getItem('submitted_reg_verbs_flashcards_emails') || '[]');
 
         const startScreen = document.getElementById('start-screen');
@@ -254,7 +255,7 @@
         const cheatNumber = document.getElementById('cheat-number');
         const btnCheatOk = document.getElementById('btn-cheat-ok');
         const finalScoreDisplay = document.getElementById('final-score');
-        const uniqueCodeDisplay = document.getElementById('unique-code');
+        const uniqueCodeWatermark = document.getElementById('unique-code-watermark');
         const btnRefresh = document.getElementById('btn-refresh');
         const emailInput = document.getElementById('email');
         const emailError = document.getElementById('email-error');
@@ -287,7 +288,6 @@
 
                 const primarySpoken = event.results[0][0].transcript.trim().toLowerCase();
                 
-                // Check if any recognized alternative matches or contains the target Spanish verb
                 const matched = transcripts.some(t => 
                     t === targetVerb || 
                     t.split(/\s+/).includes(targetVerb) ||
@@ -295,7 +295,6 @@
                     (targetVerb === "vivir" && t.includes("vivir"))
                 );
 
-                // Save the student's spoken response; only unlock if matched
                 userAnswers[currentQuestionIndex] = {
                     spoken: matched ? currentQ.correct : primarySpoken,
                     isCorrect: matched
@@ -354,7 +353,6 @@
             return arr;
         }
 
-        // Helper function to format Date, Start Time, and End Time perfectly
         function formatDateTimeRange(start, end) {
             const dateOpts = { month: 'numeric', day: 'numeric', year: 'numeric' };
             const timeOpts = { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true };
@@ -366,7 +364,6 @@
             return `${dateStr} ${startTimeStr} - ${endTimeStr}`;
         }
 
-        // Check if start or end time falls outside the period's bell schedule
         function isOutsideSchedule(period, startDate, endDate) {
             const schedule = {
                 "1st": { start: 8 * 60 + 56, end: 9 * 60 + 42 },   // 8:56 AM – 9:42 AM
@@ -397,7 +394,6 @@
             }
             emailError.classList.add('hidden');
 
-            // Capture the moment they begin the flashcards
             testStartTime = new Date();
 
             studentData = {
@@ -433,10 +429,8 @@
 
         function renderQuestionState() {
             const saved = userAnswers[currentQuestionIndex];
-            const currentQ = quizQuestions[currentQuestionIndex];
 
             if (saved && saved.isCorrect) {
-                // Student pronounced the word CORRECTLY -> Reveal the Spanish verb and enable Next
                 spanishRevealBox.classList.remove('hidden');
                 speechFeedback.classList.remove('hidden');
                 btnNext.disabled = false;
@@ -445,7 +439,6 @@
                 speechFeedback.className = "mt-3 py-2 px-5 rounded-xl font-bold text-sm text-center bg-emerald-100 text-emerald-800 border border-emerald-300";
                 speechFeedback.textContent = `✅ Correct! You pronounced "${saved.spoken}".`;
             } else if (saved && !saved.isCorrect) {
-                // Student spoke, but it was INCORRECT (or previously skipped) -> Keep Spanish word HIDDEN
                 spanishRevealBox.classList.add('hidden');
                 speechFeedback.classList.remove('hidden');
                 btnNext.disabled = true;
@@ -454,7 +447,6 @@
                 speechFeedback.className = "mt-3 py-2 px-5 rounded-xl font-bold text-sm text-center bg-red-100 text-red-800 border border-red-300";
                 speechFeedback.textContent = `❌ Heard: "${saved.spoken}". Try pronouncing it again, or press Enter to skip!`;
             } else {
-                // Student has not spoken this card yet: keep Spanish answer hidden and Next button locked
                 spanishRevealBox.classList.add('hidden');
                 speechFeedback.classList.add('hidden');
                 btnNext.disabled = true;
@@ -505,7 +497,6 @@
         });
 
         btnNext.addEventListener('click', () => {
-            // Only advance if they pronounced it correctly
             if (!userAnswers[currentQuestionIndex] || !userAnswers[currentQuestionIndex].isCorrect) return;
             if (currentQuestionIndex < quizQuestions.length - 1) {
                 currentQuestionIndex++;
@@ -515,7 +506,6 @@
             }
         });
 
-        // Allow student to skip by pressing Enter at any time without revealing the Spanish word
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !quizScreen.classList.contains('hidden') && cheatModal.classList.contains('hidden')) {
                 e.preventDefault();
@@ -568,7 +558,6 @@
             let scoreCount = 0;
             let resultsSummaryArr = [];
             
-            // Capture the exact moment the test is finished
             let testEndTime = new Date();
             let timeRangeString = formatDateTimeRange(testStartTime, testEndTime);
             let outOfBounds = isOutsideSchedule(studentData.period, testStartTime, testEndTime);
@@ -588,12 +577,11 @@
 
             const percentage = Math.round((scoreCount / quizQuestions.length) * 100);
             finalScoreDisplay.textContent = `${percentage}% (${scoreCount} / ${quizQuestions.length})`;
-            uniqueCodeDisplay.textContent = verificationCode;
+            uniqueCodeWatermark.textContent = verificationCode;
 
             submittedEmails.push(studentData.email.toLowerCase());
             localStorage.setItem('submitted_reg_verbs_flashcards_emails', JSON.stringify(submittedEmails));
 
-            // EXACT WEB APP URL
             const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxCS4RTjryw4mNi7frycJVuY0dXO9iEHqKMkTjRLQwiRKmhf5Yoa_pFUsCQwXvxP6g/exec";
 
             const payloadData = {
