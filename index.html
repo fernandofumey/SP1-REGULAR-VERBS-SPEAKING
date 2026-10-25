@@ -1,576 +1,661 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" translate="no" class="notranslate">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spanish 1: Subject Pronouns Exam</title>
+    <meta name="google" content="notranslate">
+    <title>Regular Spanish Verbs Speaking Flashcards</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .hidden-section { display: none; }
+        /* Anti-AI & Anti-Selection Guardrails */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            font-family: 'Inter', sans-serif;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .listening-pulse {
+            animation: pulse-ring 1.5s infinite;
+        }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen text-gray-800">
+<body class="bg-sky-50 text-sky-950 min-h-screen flex flex-col items-center justify-center p-4" oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
 
-    <!-- Navbar -->
-    <nav class="bg-emerald-900 text-white p-4 shadow-md sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold uppercase tracking-wider">Subject Pronouns Exam</h1>
-                <p class="text-xs text-emerald-200">Spanish 1 • Beginner Level</p>
-            </div>
-            <button onclick="toggleTeacherModal()" class="text-xs bg-emerald-800 hover:bg-emerald-700 px-3 py-1 rounded transition cursor-pointer border border-emerald-600">
-                <i class="fas fa-lock mr-1"></i> Teacher Access
-            </button>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="max-w-4xl mx-auto p-6">
+    <div id="app-container" class="w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden relative border border-sky-100">
         
-        <!-- Student Login Form -->
-        <div id="student-login" class="bg-white p-8 rounded-xl shadow-lg fade-in border-t-4 border-emerald-600">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Student Identification</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label class="block text-sm font-semibold mb-2">First Name</label>
-                    <input type="text" id="fname" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Enter your first name">
+        <!-- Header -->
+        <div class="bg-sky-600 p-6 text-white text-center">
+            <h1 class="text-3xl font-bold tracking-wide">Regular Spanish Verbs Flashcards</h1>
+            <p class="text-sky-100 mt-2">42-Verb Speaking & Pronunciation Evaluation (English → Spanish)</p>
+        </div>
+
+        <!-- Start Screen: Student Info Entry -->
+        <div id="start-screen" class="p-8">
+            <form id="student-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">First Name</label>
+                        <input type="text" id="fname" required class="w-full border-2 border-sky-200 rounded-lg p-3 focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Last Name</label>
+                        <input type="text" id="lname" required class="w-full border-2 border-sky-200 rounded-lg p-3 focus:outline-none focus:border-sky-500">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-2">Last Name</label>
-                    <input type="text" id="lname" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Enter your last name">
+                    <label class="block text-sm font-semibold mb-1">School Email / ID (Alphanumeric allowed)</label>
+                    <input type="text" id="email" required class="w-full border-2 border-sky-200 rounded-lg p-3 focus:outline-none focus:border-sky-500">
+                    <p class="text-xs text-red-500 mt-1 hidden" id="email-error">This email or ID has already submitted a test attempt.</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-2">Period</label>
-                    <select id="period" class="w-full p-3 border rounded-lg bg-white">
-                        <option>1st</option>
-                        <option>A2</option>
-                        <option>A4</option>
-                        <option>B3</option>
-                        <option>B4</option>
-                        <option>5th</option>
+                    <label class="block text-sm font-semibold mb-1">Period</label>
+                    <select id="period" required class="w-full border-2 border-sky-200 rounded-lg p-3 focus:outline-none focus:border-sky-500 bg-white">
+                        <option value="" disabled selected>Select your period...</option>
+                        <option value="1st">1st</option>
+                        <option value="A2">A2</option>
+                        <option value="A4">A4</option>
+                        <option value="B2">B2</option>
+                        <option value="B3">B3</option>
+                        <option value="5th">5th</option>
                     </select>
                 </div>
-            </div>
-            <button onclick="startQuiz()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg transition transform hover:scale-[1.01] shadow-md">
-                Start Exam
-            </button>
-        </div>
-
-        <!-- Quiz Container (Hidden initially) -->
-        <div id="quiz-container" class="hidden-section fade-in">
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div class="bg-emerald-50 p-4 border-b border-emerald-100 flex justify-between items-center">
-                    <span id="student-display" class="font-semibold text-emerald-800"></span>
-                    <span class="text-sm text-gray-500 font-mono bg-emerald-100 px-2 py-1 rounded">50 Questions (Randomized)</span>
-                </div>
-                <div id="questions-list" class="p-6 space-y-8">
-                    <!-- Questions injected via JS -->
-                </div>
-                <div class="p-6 bg-gray-50 border-t flex justify-center">
-                    <button onclick="submitExam()" class="bg-green-600 hover:bg-green-700 text-white text-lg font-bold py-3 px-12 rounded-full shadow-lg transition transform hover:-translate-y-1">
-                        Submit Exam
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-200 text-lg">
+                        Begin Speaking Flashcards
                     </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Result Section (Hidden initially) -->
-        <div id="result-container" class="hidden-section fade-in text-center py-10">
-            <div class="bg-white p-8 rounded-xl shadow-xl max-w-2xl mx-auto">
-                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-check text-3xl text-green-600"></i>
-                </div>
-                <h2 class="text-2xl font-bold mb-2">Exam Completed!</h2>
-                <p class="text-gray-600 mb-6">Your score has been recorded.</p>
-                
-                <div class="bg-gray-100 p-4 rounded-lg mb-8">
-                    <p class="text-sm text-gray-500 uppercase tracking-wide">Final Score</p>
-                    <p id="final-score-display" class="text-5xl font-bold text-emerald-900 mt-2">0%</p>
-                </div>
-
-                <!-- High Visibility Warning -->
-                <div class="bg-red-600 border-4 border-red-800 p-6 rounded-xl text-center text-white mb-8 shadow-2xl">
-                    <i class="fas fa-file-download text-5xl mb-4 text-yellow-300 animate-bounce"></i>
-                    <h3 class="text-2xl font-black uppercase mb-4 tracking-wide border-b-2 border-red-400 pb-2">⚠ ACTION REQUIRED ⚠</h3>
-                    <p class="text-xl font-bold leading-tight mb-2">
-                        DOWNLOAD THE FILE AND SEND IT TO YOUR TEACHER!!!
-                    </p>
-                    <p class="text-lg">
-                        Look for <code id="filename-display" class="bg-white text-red-600 px-2 py-1 rounded font-mono font-bold mx-1 text-base">result.csv</code> in your downloads folder.
+                    <p class="text-xs text-center text-red-600 mt-3 font-semibold">
+                        ⚠️ Warning: Leaving the active browser window, switching tabs, clicking outside the active window, or moving your cursor outside triggers a cheating alert!
                     </p>
                 </div>
+            </form>
+        </div>
 
-                <!-- Manual Download Button -->
-                <div class="mb-6">
-                    <p class="text-sm text-gray-500 mb-2">Did the file not download automatically?</p>
-                    <button onclick="downloadResult(lastResultData)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition flex items-center justify-center mx-auto gap-2">
-                        <i class="fas fa-download"></i> Download File Again
+        <!-- Quiz / Flashcard Screen -->
+        <div id="quiz-screen" class="p-8 hidden">
+            <div class="flex justify-between items-center mb-6">
+                <span id="question-tracker" class="text-sm font-bold bg-sky-100 text-sky-800 py-1 px-3 rounded-full">Card 1 / 42</span>
+                <span id="cheat-counter-display" class="text-sm font-bold text-red-500">Alerts: <span id="cheat-number">0</span></span>
+            </div>
+            
+            <!-- Flashcard Display -->
+            <div class="bg-gradient-to-br from-sky-50 to-white border-2 border-sky-200 rounded-2xl p-8 text-center shadow-inner mb-6 relative min-h-[260px] flex flex-col items-center justify-center">
+                <div class="absolute top-4 right-4">
+                    <button id="btn-read-aloud" type="button" class="flex items-center gap-1.5 bg-sky-100 hover:bg-sky-200 text-sky-700 py-1.5 px-3 rounded-lg text-xs font-bold transition border border-sky-200 shadow-sm focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                            <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 0 0 1.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06ZM18.584 5.106a.75.75 0 0 1 1.06 0c3.808 3.807 3.808 9.98 0 13.788a.75.75 0 0 1-1.06-1.06 8.25 8.25 0 0 0 0-11.668.75.75 0 0 1 0-1.06Z" />
+                            <path d="M15.932 7.757a.75.75 0 0 1 1.061 0 6 6 0 0 1 0 8.486.75.75 0 0 1-1.06-1.061 4.5 4.5 0 0 0 0-6.364.75.75 0 0 1 0-1.06Z" />
+                        </svg>
+                        Read English
                     </button>
                 </div>
+
+                <span class="text-xs font-bold uppercase tracking-widest text-sky-500 mb-2">English Meaning</span>
+                <h2 id="question-text" class="text-3xl md:text-4xl font-extrabold text-sky-950 select-none mb-6"></h2>
+
+                <!-- Hidden Spanish Answer Section (Only revealed when pronounced CORRECTLY) -->
+                <div id="spanish-reveal-box" class="hidden w-full max-w-md mt-2 pt-4 border-t-2 border-dashed border-emerald-200">
+                    <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 block mb-1">Correct Spanish Verb</span>
+                    <div class="flex items-center justify-center gap-3">
+                        <p id="spanish-answer-text" class="text-3xl font-extrabold text-emerald-700"></p>
+                        <button id="btn-listen-spanish" type="button" title="Listen to Spanish pronunciation" class="p-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-full transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 0 0 1.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06ZM18.584 5.106a.75.75 0 0 1 1.06 0c3.808 3.807 3.808 9.98 0 13.788a.75.75 0 0 1-1.06-1.06 8.25 8.25 0 0 0 0-11.668.75.75 0 0 1 0-1.06Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Microphone Control Section -->
+            <div class="flex flex-col items-center justify-center mb-8">
+                <button id="btn-mic" type="button" class="flex items-center gap-3 bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition duration-200 text-lg focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path d="M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z" />
+                        <path d="M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.291h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.291a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z" />
+                    </svg>
+                    <span id="mic-btn-text">Click & Speak in Spanish</span>
+                </button>
+
+                <p id="mic-status" class="text-sm font-semibold text-gray-500 mt-3 text-center">
+                    Pronounce the Spanish verb correctly to reveal the answer, or press <kbd class="px-2 py-0.5 bg-gray-100 border border-gray-300 rounded text-xs font-bold text-gray-700">Enter</kbd> to skip.
+                </p>
+
+                <!-- Feedback Pill -->
+                <div id="speech-feedback" class="hidden mt-3 py-2 px-5 rounded-xl font-bold text-sm text-center"></div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+                <button id="btn-back" type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition duration-200">
+                    Back
+                </button>
+                <button id="btn-next" type="button" disabled class="bg-sky-600 hover:bg-sky-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold py-2 px-8 rounded-lg shadow-md transition duration-200">
+                    Next
+                </button>
             </div>
         </div>
 
-        <!-- Teacher Dashboard (Hidden) -->
-        <div id="teacher-dashboard" class="hidden-section fade-in">
-            <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border-t-4 border-purple-600">
-                <div class="flex justify-between items-center mb-6 border-b pb-4">
-                    <h2 class="text-2xl font-bold text-gray-800"><i class="fas fa-chalkboard-teacher text-purple-600 mr-2"></i>Teacher Dashboard</h2>
-                    <button onclick="logoutTeacher()" class="text-red-500 hover:text-red-700 font-medium">Logout</button>
-                </div>
-
-                <!-- Data Import -->
-                <div class="bg-emerald-50 border-2 border-dashed border-emerald-300 rounded-xl p-8 text-center mb-8 hover:bg-emerald-100 transition cursor-pointer" ondragover="event.preventDefault()" ondrop="handleDrop(event)" onclick="document.getElementById('file-upload').click()">
-                    <i class="fas fa-cloud-upload-alt text-4xl text-emerald-400 mb-3"></i>
-                    <p class="font-semibold text-emerald-900">Upload Student Results</p>
-                    <p class="text-sm text-emerald-600 mb-4">Drag & drop student <strong>.csv</strong> files here or click to select</p>
-                    <input type="file" id="file-upload" multiple class="hidden" onchange="handleFiles(this.files)" accept=".csv">
-                    <button class="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition pointer-events-none">Select Files</button>
-                </div>
-
-                <!-- Statistics Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white border rounded-xl p-4 shadow-sm">
-                        <p class="text-gray-500 text-sm">Total Students</p>
-                        <p id="stat-count" class="text-3xl font-bold text-gray-800">0</p>
-                    </div>
-                    <div class="bg-white border rounded-xl p-4 shadow-sm">
-                        <p class="text-gray-500 text-sm">Average Score</p>
-                        <p id="stat-avg" class="text-3xl font-bold text-emerald-600">0%</p>
-                    </div>
-                    <div class="bg-white border rounded-xl p-4 shadow-sm">
-                        <p class="text-gray-500 text-sm">Highest Score</p>
-                        <p id="stat-high" class="text-3xl font-bold text-green-600">0%</p>
-                    </div>
-                </div>
-
-                <!-- Top 3 Missed -->
-                <div class="bg-red-50 rounded-xl p-6 mb-8 border border-red-100">
-                    <h3 class="text-lg font-bold text-red-800 mb-4"><i class="fas fa-exclamation-triangle mr-2"></i>Top 3 Most Missed Questions</h3>
-                    <div id="missed-questions-list" class="space-y-3">
-                        <p class="text-gray-500 italic">Upload data to see insights.</p>
-                    </div>
-                </div>
-
-                <!-- Results Table -->
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50 border-b">
-                                <th class="p-4 font-semibold text-gray-600">Name</th>
-                                <th class="p-4 font-semibold text-gray-600">Period</th>
-                                <th class="p-4 font-semibold text-gray-600">Score</th>
-                                <th class="p-4 font-semibold text-gray-600">Missed Q#</th>
-                            </tr>
-                        </thead>
-                        <tbody id="results-table-body">
-                            <!-- Rows injected JS -->
-                        </tbody>
-                    </table>
+        <!-- End Screen -->
+        <div id="end-screen" class="p-8 hidden text-center">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-3xl font-bold mb-4 text-sky-900">Flashcards Completed!</h2>
+            <p class="text-lg mb-6">Your record has been securely submitted to the teacher's grade sheet. Your personal record CSV file has also downloaded automatically.</p>
+            <div class="bg-sky-50 border border-sky-200 rounded-lg p-6 mb-8 inline-block min-w-[280px]">
+                <p class="text-sm text-gray-600 mb-1">Final Percentage Score</p>
+                <p id="final-score" class="text-4xl font-bold text-sky-600"></p>
+                <div class="mt-4 pt-3 border-t border-sky-200">
+                    <p class="text-xs uppercase tracking-widest text-gray-500 font-semibold">Unique Verification Code</p>
+                    <p id="unique-code" class="text-2xl font-mono font-extrabold text-sky-900 tracking-widest mt-1 select-all"></p>
                 </div>
             </div>
-        </div>
-
-    </main>
-
-    <!-- Password Modal -->
-    <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
-        <div class="bg-white p-6 rounded-xl shadow-2xl w-96 transform transition-all scale-100">
-            <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-key text-emerald-600"></i> Teacher Access</h3>
-            <input type="password" id="teacher-pwd" class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Enter Password" onkeydown="if(event.key === 'Enter') verifyTeacher()">
-            <p id="pwd-error" class="text-red-500 text-sm mb-4 hidden bg-red-50 p-2 rounded border border-red-100"><i class="fas fa-times-circle"></i> Incorrect password</p>
-            <div class="flex justify-end gap-2">
-                <button onclick="toggleTeacherModal()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">Cancel</button>
-                <button onclick="verifyTeacher()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition shadow">Login</button>
+            <div>
+                <button id="btn-refresh" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition duration-200">
+                    Start Over (New Student)
+                </button>
             </div>
         </div>
     </div>
 
-<script>
-// --- Configuration ---
-const TEACHER_PASSWORD = "admin"; // CHANGE THIS PASSWORD
-
-// --- 50 Questions Data (Spanish 1 Subject Pronouns) ---
-// Note: 'a' is the index of the correct answer in the 'options' array.
-const quizData = [
-    // 1-10: Basic Translation (English to Spanish)
-    { q: "How do you say 'I' in Spanish?", options: ["Yo", "Tú", "Él", "Ella"], a: 0 },
-    { q: "How do you say 'He' in Spanish?", options: ["Usted", "Él", "Nosotros", "Yo"], a: 1 },
-    { q: "How do you say 'She' in Spanish?", options: ["Ellas", "Tú", "Ella", "Ustedes"], a: 2 },
-    { q: "How do you say 'We' (mixed group) in Spanish?", options: ["Nosotras", "Vosotros", "Ellos", "Nosotros"], a: 3 },
-    { q: "How do you say 'They' (all girls) in Spanish?", options: ["Ellos", "Ellas", "Ustedes", "Nosotras"], a: 1 },
-    { q: "How do you say 'They' (all boys) in Spanish?", options: ["Ellos", "Ellas", "Ustedes", "Vosotros"], a: 0 },
-    { q: "How do you say 'You' (formal/singular) in Spanish?", options: ["Tú", "Usted", "Ustedes", "Él"], a: 1 },
-    { q: "How do you say 'You' (informal/singular) in Spanish?", options: ["Usted", "Yo", "Tú", "Ella"], a: 2 },
-    { q: "How do you say 'You all' (Latin America) in Spanish?", options: ["Vosotros", "Ustedes", "Ellos", "Nosotros"], a: 1 },
-    { q: "How do you say 'You all' (Spain/Informal) in Spanish?", options: ["Ustedes", "Ellos", "Vosotros", "Nosotros"], a: 2 },
-
-    // 11-20: Replacing Names (Talking ABOUT people)
-    { q: "Which pronoun replaces 'Marta'?", options: ["Él", "Ella", "Tú", "Yo"], a: 1 },
-    { q: "Which pronoun replaces 'Pablo'?", options: ["Él", "Ella", "Usted", "Nosotros"], a: 0 },
-    { q: "Which pronoun replaces 'Marta y Pablo'?", options: ["Ellas", "Ellos", "Nosotros", "Ustedes"], a: 1 },
-    { q: "Which pronoun replaces 'Ana y Maria'?", options: ["Ellos", "Nosotras", "Ellas", "Vosotras"], a: 2 },
-    { q: "Which pronoun replaces 'El chico'?", options: ["Ella", "Él", "Tú", "Usted"], a: 1 },
-    { q: "Which pronoun replaces 'La chica'?", options: ["Él", "Ella", "Yo", "Usted"], a: 1 },
-    { q: "Which pronoun replaces 'Los estudiantes'?", options: ["Ellos", "Ellas", "Ustedes", "Nosotros"], a: 0 },
-    { q: "Which pronoun replaces 'Las maestras'?", options: ["Ellos", "Ellas", "Nosotras", "Ustedes"], a: 1 },
-    { q: "Which pronoun replaces 'El Sr. Lopez' (talking about him)?", options: ["Tú", "Usted", "Él", "Ella"], a: 2 },
-    { q: "Which pronoun replaces 'La Sra. Garcia' (talking about her)?", options: ["Ella", "Usted", "Tú", "Yo"], a: 0 },
-
-    // 21-30: "And I" / "And You" Logic
-    { q: "Which pronoun replaces 'Juan y yo'?", options: ["Ellos", "Ustedes", "Nosotros", "Vosotros"], a: 2 },
-    { q: "Which pronoun replaces 'Maria y yo' (all female)?", options: ["Nosotros", "Nosotras", "Ellas", "Ustedes"], a: 1 },
-    { q: "Which pronoun replaces 'Tú y yo'?", options: ["Ustedes", "Ellos", "Nosotros", "Yo"], a: 2 },
-    { q: "Which pronoun replaces 'Juan y tú' (in Latin America)?", options: ["Vosotros", "Ellos", "Ustedes", "Nosotros"], a: 2 },
-    { q: "Which pronoun replaces 'Ana y tú' (in Spain)?", options: ["Vosotros", "Ustedes", "Ellas", "Nosotros"], a: 0 },
-    { q: "If you are in the group, the pronoun must be...", options: ["First person (Nosotros)", "Third person (Ellos)", "Second person (Ustedes)", "Singular (Yo)"], a: 0 },
-    { q: "If you are talking TO a group of people (not in Spain), use...", options: ["Ellos", "Nosotros", "Ustedes", "Vosotros"], a: 2 },
-    { q: "To say 'My friend and I', use...", options: ["Ellos", "Nosotros", "Ustedes", "Yo"], a: 1 },
-    { q: "To say 'You and Paul' (formal context), use...", options: ["Ustedes", "Vosotros", "Nosotros", "Ellos"], a: 0 },
-    { q: "To say 'The girls and I' (all female group), use...", options: ["Nosotras", "Nosotros", "Ellas", "Ustedes"], a: 0 },
-
-    // 31-40: Formal vs. Informal (Tú vs. Usted)
-    { q: "Talking TO your best friend:", options: ["Tú", "Usted", "Él", "Ella"], a: 0 },
-    { q: "Talking TO your principal:", options: ["Tú", "Usted", "Él", "Yo"], a: 1 },
-    { q: "Talking TO a police officer:", options: ["Tú", "Usted", "Ella", "Nosotros"], a: 1 },
-    { q: "Talking TO a dog or baby:", options: ["Usted", "Tú", "Él", "Ella"], a: 1 },
-    { q: "Talking TO an elderly person you don't know:", options: ["Tú", "Usted", "Ellos", "Yo"], a: 1 },
-    { q: "Talking TO your brother:", options: ["Usted", "Tú", "Él", "Nosotros"], a: 1 },
-    { q: "Talking TO Mr. Rodriguez:", options: ["Tú", "Usted", "Él", "Ellos"], a: 1 },
-    { q: "Talking TO Mrs. Smith:", options: ["Ella", "Tú", "Usted", "Nosotras"], a: 2 },
-    { q: "Talking TO a classmate:", options: ["Usted", "Tú", "Ella", "Él"], a: 1 },
-    { q: "Talking TO the President:", options: ["Tú", "Usted", "Él", "Yo"], a: 1 },
-
-    // 41-50: Mixed/Tricky Scenarios
-    { q: "A group of 99 girls and 1 boy:", options: ["Ellas", "Ellos", "Nosotras", "Ustedes"], a: 1 },
-    { q: "Talking about yourself:", options: ["Tú", "Él", "Yo", "Usted"], a: 2 },
-    { q: "Talking about a group of objects (masculine):", options: ["Ellos", "Ellas", "Nosotros", "Ustedes"], a: 0 },
-    { q: "Talking about a group of chairs (sillas - feminine):", options: ["Ellos", "Ellas", "Nosotras", "Vosotras"], a: 1 },
-    { q: "The abbreviation 'Ud.' stands for:", options: ["Ustedes", "Unidad", "Usted", "Union"], a: 2 },
-    { q: "The abbreviation 'Uds.' stands for:", options: ["Usted", "Unidos", "Ustedes", "Usamos"], a: 2 },
-    { q: "Is 'Vosotros' used in Mexico?", options: ["Yes", "No"], a: 1 },
-    { q: "Which pronoun is singular?", options: ["Nosotros", "Ellas", "Ella", "Ustedes"], a: 2 },
-    { q: "Which pronoun is plural?", options: ["Yo", "Tú", "Usted", "Ellos"], a: 3 },
-    { q: "When referring to 'People' generally (La gente), use:", options: ["Ellos (Plural)", "Ella (Singular)", "Nosotros", "Yo"], a: 1 }
-];
-
-let studentData = {
-    fname: "",
-    lname: "",
-    period: "",
-    answers: [] 
-};
-
-let lastResultData = null;
-let currentSessionQuiz = []; // Holds the randomized quiz for the current student
-
-// --- Utility: Fisher-Yates Shuffle ---
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-// --- Student Flow ---
-
-function startQuiz() {
-    const f = document.getElementById('fname').value.trim();
-    const l = document.getElementById('lname').value.trim();
-    const p = document.getElementById('period').value;
-
-    if (!f || !l) {
-        alert("Please enter your full name.");
-        return;
-    }
-
-    studentData.fname = f;
-    studentData.lname = l;
-    studentData.period = p;
-
-    // --- RANDOMIZATION LOGIC ---
-    currentSessionQuiz = quizData.map((item, index) => ({
-        ...item,
-        originalIndex: index,
-        options: [...item.options]
-    }));
-
-    shuffleArray(currentSessionQuiz);
-
-    currentSessionQuiz.forEach(q => {
-        let correctText = quizData[q.originalIndex].options[q.a];
-        shuffleArray(q.options);
-        q.a = q.options.indexOf(correctText);
-    });
-
-    document.getElementById('student-display').innerText = `${l}, ${f} (${p})`;
-    document.getElementById('student-login').classList.add('hidden-section');
-    document.getElementById('quiz-container').classList.remove('hidden-section');
-
-    renderQuestions();
-    window.scrollTo(0, 0);
-}
-
-function renderQuestions() {
-    const container = document.getElementById('questions-list');
-    container.innerHTML = currentSessionQuiz.map((q, index) => `
-        <div class="mb-6 p-5 border border-gray-200 rounded-xl hover:shadow-md transition bg-gray-50" id="q-box-${index}">
-            <div class="flex items-start gap-3">
-                <span class="bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded text-sm h-fit mt-1">${index + 1}</span>
-                <div class="w-full">
-                    <p class="font-semibold text-lg mb-4 text-gray-800">${q.q}</p>
-                    
-                    <div class="space-y-3 mb-4">
-                        ${q.options.map((opt, optIndex) => `
-                            <label class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border border-transparent hover:bg-emerald-100 hover:border-emerald-300 transition group">
-                                <input type="radio" name="q${index}" value="${optIndex}" class="form-radio h-5 w-5 text-emerald-600 focus:ring-emerald-500">
-                                <span class="group-hover:text-emerald-900">${opt}</span>
-                            </label>
-                        `).join('')}
-                    </div>
-                </div>
-            </div>
+    <!-- Cheating Modal Warning -->
+    <div id="cheat-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <div class="text-red-500 text-5xl mb-4">⚠️</div>
+            <h2 class="text-2xl font-bold text-red-600 mb-2">Cheating Detected!</h2>
+            <p class="text-gray-700 mb-6">You left the active test window, navigated away, clicked outside the designated area, or switched tabs. This incident has been logged.</p>
+            <button id="btn-cheat-ok" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg w-full">
+                I Understand
+            </button>
         </div>
-    `).join('');
-}
+    </div>
 
-function submitExam() {
-    const answers = [];
-    let totalPoints = 0; 
-    let missedIndices = []; 
+    <script>
+        // 42 Regular Spanish Verbs Master Bank (English shown first -> Student speaks Spanish)
+        const rawQuestions = [
+            { q: "to speak / talk", correct: "hablar" },
+            { q: "to look (at) / watch", correct: "mirar" },
+            { q: "to listen (to)", correct: "escuchar" },
+            { q: "to need", correct: "necesitar" },
+            { q: "to wear / carry / take", correct: "llevar" },
+            { q: "to take / drink", correct: "tomar" },
+            { q: "to work", correct: "trabajar" },
+            { q: "to study", correct: "estudiar" },
+            { q: "to buy", correct: "comprar" },
+            { q: "to help", correct: "ayudar" },
+            { q: "to wait (for) / hope", correct: "esperar" },
+            { q: "to ask (a question)", correct: "preguntar" },
+            { q: "to happen / pass / spend (time)", correct: "pasar" },
+            { q: "to call", correct: "llamar" },
+            { q: "to leave (behind) / let", correct: "dejar" },
+            { q: "to enter / go in", correct: "entrar" },
+            { q: "to finish / end", correct: "terminar" },
+            { q: "to walk", correct: "caminar" },
+            { q: "to travel", correct: "viajar" },
+            { q: "to prepare / make", correct: "preparar" },
+            { q: "to use", correct: "usar" },
+            { q: "to visit", correct: "visitar" },
+            { q: "to forget", correct: "olvidar" },
+            { q: "to return / go back", correct: "regresar" },
+            { q: "to eat", correct: "comer" },
+            { q: "to drink", correct: "beber" },
+            { q: "to must / should / owe", correct: "deber" },
+            { q: "to learn", correct: "aprender" },
+            { q: "to run", correct: "correr" },
+            { q: "to understand", correct: "comprender" },
+            { q: "to sell", correct: "vender" },
+            { q: "to answer / respond", correct: "responder" },
+            { q: "to live", correct: "vivir" },
+            { q: "to receive / get", correct: "recibir" },
+            { q: "to decide", correct: "decidir" },
+            { q: "to go up / climb / get on", correct: "subir" },
+            { q: "to share", correct: "compartir" },
+            { q: "to attend", correct: "asistir" },
+            { q: "to allow / permit", correct: "permitir" },
+            { q: "to write", correct: "escribir" },
+            { q: "to open", correct: "abrir" },
+            { q: "to argue, discuss", correct: "discutir" }
+        ];
 
-    for (let i = 0; i < currentSessionQuiz.length; i++) {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        let quizQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = {}; 
+        let cheatCount = 0;
+        let studentData = {};
+        let isRecording = false;
+        let recognition = null;
         
-        if (!selected) {
-            alert(`You missed Question ${i + 1}. Please answer all questions before submitting.`);
-            document.getElementById(`q-box-${i}`).scrollIntoView({behavior: "smooth", block: "center"});
-            document.getElementById(`q-box-${i}`).classList.add('border-red-500', 'bg-red-50');
-            setTimeout(() => document.getElementById(`q-box-${i}`).classList.remove('border-red-500', 'bg-red-50'), 2000);
-            return;
-        }
+        // Track the start time
+        let testStartTime = null;
 
-        const val = parseInt(selected.value);
-        answers.push(val);
-        
-        const currentQ = currentSessionQuiz[i];
+        // Unique local storage key for Regular Verbs Speaking Flashcards
+        let submittedEmails = JSON.parse(localStorage.getItem('submitted_reg_verbs_flashcards_emails') || '[]');
 
-        if (val === currentQ.a) {
-            totalPoints += 2;
-        } else {
-            missedIndices.push(currentQ.originalIndex);
-        }
-    }
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const endScreen = document.getElementById('end-screen');
+        const studentForm = document.getElementById('student-form');
+        const questionTracker = document.getElementById('question-tracker');
+        const questionText = document.getElementById('question-text');
+        const spanishRevealBox = document.getElementById('spanish-reveal-box');
+        const spanishAnswerText = document.getElementById('spanish-answer-text');
+        const btnListenSpanish = document.getElementById('btn-listen-spanish');
+        const btnMic = document.getElementById('btn-mic');
+        const micBtnText = document.getElementById('mic-btn-text');
+        const micStatus = document.getElementById('mic-status');
+        const speechFeedback = document.getElementById('speech-feedback');
+        const btnBack = document.getElementById('btn-back');
+        const btnNext = document.getElementById('btn-next');
+        const cheatModal = document.getElementById('cheat-modal');
+        const cheatNumber = document.getElementById('cheat-number');
+        const btnCheatOk = document.getElementById('btn-cheat-ok');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const uniqueCodeDisplay = document.getElementById('unique-code');
+        const btnRefresh = document.getElementById('btn-refresh');
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('email-error');
+        const btnReadAloud = document.getElementById('btn-read-aloud');
 
-    const finalScore = totalPoints; 
-    
-    const resultPayload = {
-        name: `${studentData.lname}, ${studentData.fname}`,
-        period: studentData.period,
-        score: finalScore,
-        rawScore: totalPoints,
-        total: quizData.length,
-        missed: missedIndices,
-        timestamp: new Date().toISOString()
-    };
+        // Initialize Web Speech API for Spanish Pronunciation Recognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 5;
 
-    lastResultData = resultPayload;
+            recognition.onstart = () => {
+                isRecording = true;
+                btnMic.classList.remove('bg-sky-600', 'hover:bg-sky-700');
+                btnMic.classList.add('bg-red-600', 'hover:bg-red-700', 'listening-pulse');
+                micBtnText.textContent = "Listening... Speak Now";
+                micStatus.textContent = "Listening for Spanish pronunciation...";
+            };
 
-    document.getElementById('quiz-container').classList.add('hidden-section');
-    document.getElementById('result-container').classList.remove('hidden-section');
-    document.getElementById('final-score-display').innerText = finalScore + "%";
-    window.scrollTo(0, 0);
-    
-    downloadResult(resultPayload);
-}
-
-function downloadResult(data) {
-    if (!data) return;
-    
-    const headers = ["Name", "Period", "Score", "RawScore", "Total", "Timestamp", "MissedQuestionIndices"];
-    const safeName = data.name.replace(/"/g, '""');
-    const missedStr = data.missed.join('|');
-    
-    const row = [
-        `"${safeName}"`,
-        `"${data.period}"`,
-        data.score,
-        data.rawScore,
-        data.total,
-        `"${data.timestamp}"`,
-        `"${missedStr}"`
-    ];
-    
-    const csvContent = headers.join(",") + "\n" + row.join(",");
-    const dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
-    const downloadAnchorNode = document.createElement('a');
-    const fileName = `Result_${studentData.lname.replace(/[^a-z0-9]/gi, '')}_${studentData.fname.replace(/[^a-z0-9]/gi, '')}.csv`;
-    
-    document.getElementById('filename-display').innerText = fileName;
-    
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", fileName);
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-}
-
-// --- Teacher Flow ---
-
-function toggleTeacherModal() {
-    const modal = document.getElementById('password-modal');
-    modal.classList.toggle('hidden');
-    document.getElementById('pwd-error').classList.add('hidden');
-    document.getElementById('teacher-pwd').value = "";
-    if(!modal.classList.contains('hidden')) {
-        setTimeout(() => document.getElementById('teacher-pwd').focus(), 100);
-    }
-}
-
-function verifyTeacher() {
-    const pwd = document.getElementById('teacher-pwd').value;
-    if (pwd === TEACHER_PASSWORD) {
-        toggleTeacherModal();
-        document.getElementById('student-login').classList.add('hidden-section');
-        document.getElementById('quiz-container').classList.add('hidden-section');
-        document.getElementById('result-container').classList.add('hidden-section');
-        document.getElementById('teacher-dashboard').classList.remove('hidden-section');
-    } else {
-        document.getElementById('pwd-error').classList.remove('hidden');
-    }
-}
-
-function logoutTeacher() {
-    location.reload();
-}
-
-window.toggleTeacherModal = toggleTeacherModal;
-window.verifyTeacher = verifyTeacher;
-window.logoutTeacher = logoutTeacher;
-
-// --- Dashboard Logic ---
-
-let classResults = [];
-
-function handleDrop(e) {
-    e.preventDefault();
-    handleFiles(e.dataTransfer.files);
-}
-
-function handleFiles(files) {
-    Array.from(files).forEach(file => {
-        if (!file.name.toLowerCase().endsWith('.csv')) return;
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const text = e.target.result;
-                const lines = text.trim().split('\n');
-                if (lines.length < 2) return; 
+            recognition.onresult = (event) => {
+                const currentQ = quizQuestions[currentQuestionIndex];
+                const targetVerb = normalizeSpanish(currentQ.correct);
                 
-                const rowStr = lines[1];
-                const matches = rowStr.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+                let transcripts = [];
+                for (let i = 0; i < event.results[0].length; i++) {
+                    transcripts.push(normalizeSpanish(event.results[0][i].transcript));
+                }
+
+                const primarySpoken = event.results[0][0].transcript.trim().toLowerCase();
                 
-                if (!matches || matches.length < 7) throw new Error("Invalid CSV");
+                // Check if any recognized alternative matches or contains the target Spanish verb
+                const matched = transcripts.some(t => 
+                    t === targetVerb || 
+                    t.split(/\s+/).includes(targetVerb) ||
+                    (targetVerb === "beber" && (t === "viver" || t.includes("beber"))) ||
+                    (targetVerb === "vivir" && t.includes("vivir"))
+                );
 
-                const clean = (str) => str ? str.replace(/^"|"$/g, '').replace(/""/g, '"') : "";
-
-                const res = {
-                    name: clean(matches[0]),
-                    period: clean(matches[1]),
-                    score: parseInt(matches[2]),
-                    rawScore: parseInt(matches[3]),
-                    total: parseInt(matches[4]),
-                    timestamp: clean(matches[5]),
-                    missed: clean(matches[6]).split('|').filter(s => s !== "").map(Number)
+                // Save the student's spoken response; only unlock if matched
+                userAnswers[currentQuestionIndex] = {
+                    spoken: matched ? currentQ.correct : primarySpoken,
+                    isCorrect: matched
                 };
 
-                if(!classResults.some(r => r.name === res.name && r.timestamp === res.timestamp)) {
-                    classResults.push(res);
-                }
-                updateDashboard();
-            } catch (err) {
-                console.error("Error parsing file:", file.name, err);
+                renderQuestionState();
+            };
+
+            recognition.onerror = (event) => {
+                isRecording = false;
+                resetMicUI();
+                micStatus.textContent = `Microphone notice (${event.error}). Click the button and try speaking again, or press Enter to skip.`;
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                resetMicUI();
+            };
+        } else {
+            micStatus.textContent = "Speech recognition requires Google Chrome or Microsoft Edge. Press Enter to skip if unavailable.";
+        }
+
+        function resetMicUI() {
+            btnMic.classList.add('bg-sky-600', 'hover:bg-sky-700');
+            btnMic.classList.remove('bg-red-600', 'hover:bg-red-700', 'listening-pulse');
+            const saved = userAnswers[currentQuestionIndex];
+            micBtnText.textContent = (saved && saved.isCorrect) ? "Pronounced Correctly!" : "Click & Speak in Spanish";
+        }
+
+        function normalizeSpanish(str) {
+            return str
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[.,¡!¿?]/g, "")
+                .trim();
+        }
+
+        function generateUnique10CharCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = '';
+            const array = new Uint32Array(10);
+            window.crypto.getRandomValues(array);
+            for (let i = 0; i < 10; i++) {
+                code += chars[array[i] % chars.length];
             }
-        };
-        reader.readAsText(file);
-    });
-}
+            return code;
+        }
 
-function updateDashboard() {
-    const totalStudents = classResults.length;
-    const avgScore = Math.round(classResults.reduce((acc, curr) => acc + curr.score, 0) / totalStudents) || 0;
-    const highScore = Math.max(...classResults.map(r => r.score), 0);
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
 
-    document.getElementById('stat-count').innerText = totalStudents;
-    document.getElementById('stat-avg').innerText = avgScore + "%";
-    document.getElementById('stat-high').innerText = highScore + "%";
+        // Helper function to format Date, Start Time, and End Time perfectly
+        function formatDateTimeRange(start, end) {
+            const dateOpts = { month: 'numeric', day: 'numeric', year: 'numeric' };
+            const timeOpts = { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true };
+            
+            const dateStr = start.toLocaleDateString(undefined, dateOpts);
+            const startTimeStr = start.toLocaleTimeString(undefined, timeOpts);
+            const endTimeStr = end.toLocaleTimeString(undefined, timeOpts);
+            
+            return `${dateStr} ${startTimeStr} - ${endTimeStr}`;
+        }
 
-    const tbody = document.getElementById('results-table-body');
-    tbody.innerHTML = classResults.map(r => `
-        <tr class="border-b hover:bg-gray-50 transition">
-            <td class="p-3 font-medium text-gray-800">${r.name}</td>
-            <td class="p-3 text-gray-500">${r.period}</td>
-            <td class="p-3 font-bold ${getScoreColor(r.score)}">${r.score}%</td>
-            <td class="p-3 text-xs text-gray-400 break-words max-w-xs">${formatMissed(r.missed)}</td>
-        </tr>
-    `).join('');
+        // Check if start or end time falls outside the period's bell schedule
+        function isOutsideSchedule(period, startDate, endDate) {
+            const schedule = {
+                "1st": { start: 8 * 60 + 56, end: 9 * 60 + 42 },   // 8:56 AM – 9:42 AM
+                "A2":  { start: 9 * 60 + 48, end: 11 * 60 + 19 },  // 9:48 AM – 11:19 AM
+                "B2":  { start: 9 * 60 + 48, end: 11 * 60 + 19 },  // 9:48 AM – 11:19 AM
+                "B3":  { start: 11 * 60 + 25, end: 13 * 60 + 30 }, // 11:25 AM – 1:30 PM
+                "A4":  { start: 13 * 60 + 36, end: 15 * 60 + 7 },  // 1:36 PM – 3:07 PM
+                "5th": { start: 15 * 60 + 13, end: 16 * 60 + 0 }   // 3:13 PM – 4:00 PM
+            };
 
-    const questionMissCounts = {};
-    classResults.forEach(r => {
-        r.missed.forEach(qIdx => {
-            if (!isNaN(qIdx)) {
-                questionMissCounts[qIdx] = (questionMissCounts[qIdx] || 0) + 1;
+            const bounds = schedule[period];
+            if (!bounds) return false;
+
+            const startMins = startDate.getHours() * 60 + startDate.getMinutes();
+            const endMins = endDate.getHours() * 60 + endDate.getMinutes();
+
+            return (startMins < bounds.start || startMins > bounds.end || endMins < bounds.start || endMins > bounds.end);
+        }
+
+        studentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailVal = emailInput.value.trim().toLowerCase();
+
+            if (submittedEmails.includes(emailVal)) {
+                emailError.classList.remove('hidden');
+                emailInput.focus();
+                return;
+            }
+            emailError.classList.add('hidden');
+
+            // Capture the moment they begin the flashcards
+            testStartTime = new Date();
+
+            studentData = {
+                firstName: document.getElementById('fname').value.trim(),
+                lastName: document.getElementById('lname').value.trim(),
+                email: emailInput.value.trim(),
+                period: document.getElementById('period').value
+            };
+
+            quizQuestions = shuffleArray(rawQuestions);
+
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            loadQuestion();
+        });
+
+        function loadQuestion() {
+            window.speechSynthesis.cancel();
+            if (isRecording && recognition) {
+                recognition.stop();
+            }
+            
+            const currentQ = quizQuestions[currentQuestionIndex];
+            questionTracker.textContent = `Card ${currentQuestionIndex + 1} / ${quizQuestions.length}`;
+            questionText.textContent = currentQ.q;
+            spanishAnswerText.textContent = currentQ.correct;
+
+            renderQuestionState();
+
+            btnBack.style.display = currentQuestionIndex === 0 ? 'none' : 'block';
+            btnNext.textContent = currentQuestionIndex === quizQuestions.length - 1 ? 'Submit Flashcards' : 'Next';
+        }
+
+        function renderQuestionState() {
+            const saved = userAnswers[currentQuestionIndex];
+            const currentQ = quizQuestions[currentQuestionIndex];
+
+            if (saved && saved.isCorrect) {
+                // Student pronounced the word CORRECTLY -> Reveal the Spanish verb and enable Next
+                spanishRevealBox.classList.remove('hidden');
+                speechFeedback.classList.remove('hidden');
+                btnNext.disabled = false;
+                micBtnText.textContent = "Pronounced Correctly!";
+                micStatus.textContent = "Great job! Click Next or press Enter to continue.";
+                speechFeedback.className = "mt-3 py-2 px-5 rounded-xl font-bold text-sm text-center bg-emerald-100 text-emerald-800 border border-emerald-300";
+                speechFeedback.textContent = `✅ Correct! You pronounced "${saved.spoken}".`;
+            } else if (saved && !saved.isCorrect) {
+                // Student spoke, but it was INCORRECT (or previously skipped) -> Keep Spanish word HIDDEN
+                spanishRevealBox.classList.add('hidden');
+                speechFeedback.classList.remove('hidden');
+                btnNext.disabled = true;
+                micBtnText.textContent = "Try Again in Spanish";
+                micStatus.textContent = "Not quite right. Try speaking again to reveal the answer, or press Enter to skip.";
+                speechFeedback.className = "mt-3 py-2 px-5 rounded-xl font-bold text-sm text-center bg-red-100 text-red-800 border border-red-300";
+                speechFeedback.textContent = `❌ Heard: "${saved.spoken}". Try pronouncing it again, or press Enter to skip!`;
+            } else {
+                // Student has not spoken this card yet: keep Spanish answer hidden and Next button locked
+                spanishRevealBox.classList.add('hidden');
+                speechFeedback.classList.add('hidden');
+                btnNext.disabled = true;
+                micBtnText.textContent = "Click & Speak in Spanish";
+                micStatus.textContent = "Pronounce the Spanish verb correctly to reveal the answer, or press Enter to skip.";
+            }
+        }
+
+        btnMic.addEventListener('click', () => {
+            if (!recognition) return;
+            window.speechSynthesis.cancel();
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                try {
+                    recognition.start();
+                } catch (err) {
+                    console.error(err);
+                }
             }
         });
-    });
 
-    const sortedMissed = Object.keys(questionMissCounts)
-        .map(key => ({ 
-            index: parseInt(key), 
-            count: questionMissCounts[key], 
-            text: quizData[key].q 
-        }))
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 3);
+        btnReadAloud.addEventListener('click', () => {
+            const currentQ = quizQuestions[currentQuestionIndex];
+            if (currentQ && currentQ.q) {
+                window.speechSynthesis.cancel(); 
+                const utterance = new SpeechSynthesisUtterance(currentQ.q);
+                utterance.lang = 'en-US'; 
+                window.speechSynthesis.speak(utterance);
+            }
+        });
 
-    const missedContainer = document.getElementById('missed-questions-list');
-    if (sortedMissed.length > 0) {
-        missedContainer.innerHTML = sortedMissed.map(item => {
-            const pct = Math.round((item.count / totalStudents) * 100);
-            return `
-                <div class="flex items-start bg-white p-3 rounded-lg border shadow-sm">
-                    <span class="bg-red-100 text-red-800 font-bold px-2 py-1 rounded text-xs mr-3 mt-0.5">Q${item.index + 1}</span>
-                    <div class="flex-1">
-                        <p class="text-sm font-medium text-gray-800">${item.text}</p>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                            <div class="bg-red-500 h-2 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
-                        </div>
-                        <p class="text-xs text-right text-red-600 mt-1 font-semibold">${pct}% of class missed this</p>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    } else {
-        missedContainer.innerHTML = `<p class="text-gray-500 italic text-center">No incorrect answers yet!</p>`;
-    }
-}
+        btnListenSpanish.addEventListener('click', () => {
+            const currentQ = quizQuestions[currentQuestionIndex];
+            if (currentQ && currentQ.correct) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(currentQ.correct);
+                utterance.lang = 'es-ES';
+                window.speechSynthesis.speak(utterance);
+            }
+        });
 
-function formatMissed(missedArr) {
-    if (!missedArr || missedArr.length === 0) return '<span class="text-green-500"><i class="fas fa-check"></i> Perfect</span>';
-    return missedArr.map(i => i + 1).join(', ');
-}
+        btnBack.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        });
 
-function getScoreColor(score) {
-    if(score >= 90) return 'text-green-600';
-    if(score >= 70) return 'text-yellow-600';
-    return 'text-red-600';
-}
-</script>
+        btnNext.addEventListener('click', () => {
+            // Only advance if they pronounced it correctly
+            if (!userAnswers[currentQuestionIndex] || !userAnswers[currentQuestionIndex].isCorrect) return;
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        });
+
+        // Allow student to skip by pressing Enter at any time without revealing the Spanish word
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !quizScreen.classList.contains('hidden') && cheatModal.classList.contains('hidden')) {
+                e.preventDefault();
+                if (!userAnswers[currentQuestionIndex]) {
+                    userAnswers[currentQuestionIndex] = {
+                        spoken: 'Skipped (Pressed Enter)',
+                        isCorrect: false
+                    };
+                }
+                if (currentQuestionIndex < quizQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }
+        });
+
+        function triggerCheat() {
+            if (!quizScreen.classList.contains('hidden') && endScreen.classList.contains('hidden')) {
+                cheatCount++;
+                cheatNumber.textContent = cheatCount;
+                cheatModal.classList.remove('hidden');
+            }
+        }
+
+        window.addEventListener('blur', triggerCheat);
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) triggerCheat();
+        });
+        document.addEventListener('mouseleave', () => {
+            triggerCheat();
+        });
+        window.addEventListener('mouseout', (e) => {
+            if (!e.relatedTarget && !e.toElement) {
+                triggerCheat();
+            }
+        });
+
+        btnCheatOk.addEventListener('click', () => {
+            cheatModal.classList.add('hidden');
+        });
+
+        function finishQuiz() {
+            window.speechSynthesis.cancel();
+            if (isRecording && recognition) {
+                recognition.stop();
+            }
+            
+            let scoreCount = 0;
+            let resultsSummaryArr = [];
+            
+            // Capture the exact moment the test is finished
+            let testEndTime = new Date();
+            let timeRangeString = formatDateTimeRange(testStartTime, testEndTime);
+            let outOfBounds = isOutsideSchedule(studentData.period, testStartTime, testEndTime);
+            let verificationCode = generateUnique10CharCode();
+
+            quizQuestions.forEach((item, idx) => {
+                const uAns = userAnswers[idx];
+                const isCorrect = uAns && uAns.isCorrect;
+                if (isCorrect) {
+                    scoreCount++;
+                    resultsSummaryArr.push(`card ${idx + 1} (${item.q}): right pronunciation: '${item.correct}'`);
+                } else {
+                    const wrongAns = uAns !== undefined ? uAns.spoken : 'No pronunciation provided';
+                    resultsSummaryArr.push(`card ${idx + 1} (${item.q}): wrong pronunciation: '${wrongAns}'; right answer: '${item.correct}'`);
+                }
+            });
+
+            const percentage = Math.round((scoreCount / quizQuestions.length) * 100);
+            finalScoreDisplay.textContent = `${percentage}% (${scoreCount} / ${quizQuestions.length})`;
+            uniqueCodeDisplay.textContent = verificationCode;
+
+            submittedEmails.push(studentData.email.toLowerCase());
+            localStorage.setItem('submitted_reg_verbs_flashcards_emails', JSON.stringify(submittedEmails));
+
+            // EXACT WEB APP URL
+            const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxCS4RTjryw4mNi7frycJVuY0dXO9iEHqKMkTjRLQwiRKmhf5Yoa_pFUsCQwXvxP6g/exec";
+
+            const payloadData = {
+                title: `Regular Spanish Verbs Speaking Flashcards (42 Verbs) [Code: ${verificationCode}]`,
+                date: timeRangeString,
+                firstName: studentData.firstName,
+                lastName: studentData.lastName,
+                email: studentData.email,
+                period: studentData.period,
+                score: `${percentage}% (${scoreCount}/${quizQuestions.length}) - Code: ${verificationCode}`,
+                cheatCount: cheatCount,
+                results: resultsSummaryArr.join(' | '),
+                outsideSchedule: outOfBounds ? "TRUE" : "FALSE",
+                highlightColor: outOfBounds ? "#fef08a" : ""
+            };
+
+            if (GOOGLE_SHEET_WEB_APP_URL) {
+                const formBody = [];
+                for (const property in payloadData) {
+                    const encodedKey = encodeURIComponent(property);
+                    const encodedValue = encodeURIComponent(payloadData[property]);
+                    formBody.push(encodedKey + "=" + encodedValue);
+                }
+                const formattedBody = formBody.join("&");
+
+                fetch(GOOGLE_SHEET_WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formattedBody
+                }).then(() => {
+                    console.log('Payload transmitted via form urlencoding');
+                }).catch(err => {
+                    console.error('Transmission error:', err);
+                });
+            }
+
+            downloadCSV(payloadData, verificationCode);
+
+            quizScreen.classList.add('hidden');
+            endScreen.classList.remove('hidden');
+        }
+
+        function downloadCSV(data, verificationCode) {
+            const csvContent = "data:text/csv;charset=utf-8," + 
+                "Quiz Title,Date & Duration,First Name,Last Name,Email,Period,Score,Verification Code,Cheating Alerts,Outside Schedule\n" +
+                `"${data.title}","${data.date}","${data.firstName}","${data.lastName}","${data.email}","${data.period}","${data.score}","${verificationCode}",${data.cheatCount},"${data.outsideSchedule}"`;
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Regular_Verbs_Flashcards_${data.lastName}_${data.firstName}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        btnRefresh.addEventListener('click', () => {
+            window.location.reload();
+        });
+    </script>
 </body>
 </html>
